@@ -1,43 +1,29 @@
 import tweepy
-import json
+import csv
 
 # Twitter API credentials
-API_KEY = "************************************"
-API_SECRET = "************************************" 
-ACCESS_TOKEN = "************************************"
-ACCESS_TOKEN_SECRET = "************************************"
-# Authenticate with Twitter API
+API_KEY = '*******************************'
+API_SECRET = '*******************************'
+ACCESS_TOKEN = '*******************************'
+ACCESS_TOKEN_SECRET = '*******************************'
+
+# Authenticate with Twitter
 auth = tweepy.OAuthHandler(API_KEY, API_SECRET)
 auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
-api = tweepy.API(auth, wait_on_rate_limit=True)
+api = tweepy.API(auth)
 
-# Fetch tweets from a specific user timeline
-def fetch_user_tweets(username, max_tweets=100):
-    try:
-        tweets = api.user_timeline(screen_name=username, count=max_tweets, tweet_mode="extended")
-        return [{"id": tweet.id_str, "text": tweet.full_text, "timestamp": str(tweet.created_at)} for tweet in tweets]
-    except tweepy.errors.TweepyException as e:
-        print(f"Error: {e}")
-        return []
+# Search for tweets
+query = "Uganda"  # Adjust the query as needed
+geocode = "1.3733,32.2903,500km"  # Approximate center of Uganda
+tweets = tweepy.Cursor(api.search_tweets, q=query, geocode=geocode, lang="en", tweet_mode="extended").items(1000)
 
-# Save tweets to JSON
-def save_to_json(data, filename):
-    with open(filename, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=4)
+# Write to CSV
+with open('uganda_tweets.csv', 'w', newline='', encoding='utf-8') as csvfile:
+    csvwriter = csv.writer(csvfile)
+    csvwriter.writerow(['ID', 'Created At', 'Text', 'User', 'Location', 'Hashtags'])
+    for tweet in tweets:
+        hashtags = [ht['text'] for ht in tweet.entities['hashtags']]
+        csvwriter.writerow([tweet.id, tweet.created_at, tweet.full_text, tweet.user.screen_name, tweet.user.location, ', '.join(hashtags)])
 
-def save_csv(data, filename):
-    """
-    Save data to a CSV file
-    """
-    with open(filename, "w", encoding="utf-8", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=["id", "user", "text", "timestamp"])
-        writer.writeheader()
-        writer.writerows(data)
+print("Data saved to uganda_tweets.csv")
 
-
-# Example usage
-username = "BBCWorld"
-tweets = fetch_user_tweets(username)
-save_to_json(tweets, "user_tweets.json")
-save_csv(tweets, "uganda_tweets.csv")
-print("Tweets saved to user_tweets.json")
