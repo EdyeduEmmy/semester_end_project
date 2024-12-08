@@ -4,7 +4,7 @@
 (require math)
 
 ;;; Step 1: Load the .csv file
-(define csv-data (read-csv "C:/Users/Ethan_Xian/Downloads/uganda_tweets.csv")) ; Replace with your .csv file path
+(define csv-data (read-csv "C:/Users/Ethan_Xian/Downloads/uganda_tweets.csv")) ; Replace with your uganda_tweets.csv file path
 
 ;;; Step 2: Process the data
 ;;; Extract columns of interest. Assume the .csv file has headers and one of the
