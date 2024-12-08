@@ -2,11 +2,10 @@ import tweepy
 import json
 
 # Twitter API credentials
-API_KEY = "Q8aSWFCNgWiwkz8TX6OlUC0yb"
-API_SECRET = "lK5dZ72vMakcKK8qygDbuK1xPtPHoLk75rrEYXJebe6DPAYMeN" 
-ACCESS_TOKEN = "1864648166378745856-BVELX2VF1m7db7JnEOEvxcnKlll4JD"
-ACCESS_TOKEN_SECRET = "UavrCChQPEm3GGvyiF17iTqZrBHSPWw4JqkU0PCH4oAuA"
-
+API_KEY = "************************************"
+API_SECRET = "************************************" 
+ACCESS_TOKEN = "************************************"
+ACCESS_TOKEN_SECRET = "************************************"
 # Authenticate with Twitter API
 auth = tweepy.OAuthHandler(API_KEY, API_SECRET)
 auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
